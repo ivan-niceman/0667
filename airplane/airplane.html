@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home work 03.08.2022</title>
+    <style>
+      body {
+        background-color: bisque;
+      }
+      #airplaneImg {
+        position: absolute;
+        width: 200px;
+        height: 180px;
+      }
+      #boxImg {
+        position: absolute;
+        left: 50%;
+        top: 200px;
+        width: 70px;
+        height: 70px;
+      }
+    </style>
+  </head>
+  <body>
+    <div><img src="img/airplane.png" alt="airplane" id="airplaneImg" /></div>
+    <div><img src="img/box.png" alt="box" id="boxImg" /></div>
+
+    <script>
+      let airplaneImg = document.getElementById("airplaneImg");
+      let step = 0;
+      let flag = true;
+
+      function flyAirplane() {
+        if (window.innerWidth - 200 > step && flag == true) {
+          airplaneImg.style.transform = "scaleX(1)";
+          step += 1;
+        } else {
+          airplaneImg.style.transform = "scaleX(-1)";
+          step -= 1;
+          flag = step == 0 ? true : false;
+        }
+
+        if (Math.round(window.innerWidth / 2) == step + 100) {
+          boxImg.hidden = false;
+          console.log("Середина");
+        }
+        airplaneImg.style.left = step + "px";
+      }
+      setInterval(flyAirplane, 1);
+
+      let boxImg = document.getElementById("boxImg");
+      boxImg.hidden = true;
+
+      function dropBox() {
+        if (boxImg.hidden == false) {
+          boxImg.style.transform = "translate(100px, 600px)";
+          boxImg.style.transition = "all 2s linear";
+        }
+      }
+      setInterval(dropBox, 100);
+    </script>
+  </body>
+</html>
