@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css"
+      integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+
+
+    <title>Кофейный аппарат</title>
+    <style>
+      body {
+        background: url(img/coffee.jpg) no-repeat;
+        background-size: cover;
+        background-position: center;
+        height: 100vh;
+      }
+      .coffee_btn {
+        width: 0;
+        height: 0;
+        border-top: 30px solid transparent;
+        border-left: 60px solid orangered;
+        border-bottom: 30px solid transparent;
+        cursor: pointer;
+      }
+      .coffee_btn:hover {
+        border-left: 60px solid rgb(153, 55, 19);
+      }
+      .coffee_block {
+        background-color: rgb(250, 148, 79);
+        border: 1px solid #000;
+        margin-bottom: 32px;
+        justify-content: space-between;
+        padding-right: 16px;
+      }
+      .coffee_block span {
+        font-size: 26px;
+        font-weight: 700;
+        line-height: 60px;
+        vertical-align: middle;
+        padding-left: 32px;
+        color: #fff;
+      }
+      @media (max-width: 350px) {
+        .coffee_block span {
+          font-size: 23px;
+        }
+      }
+      /* .input_money {
+        width: 100%;
+        height: 50px;
+        margin-bottom: 30px;
+        outline: none;
+      } */
+      #display {
+        width: 100%;
+        height: 180px;
+        background-color: rgba(165, 103, 21, 0.5);
+        color: #fff;
+        outline: 1px solid #000;
+        border-radius: 10px;
+        text-align: center;
+        padding: 8px;
+      }
+
+      img[src$="rub.jpg"]:hover {
+        cursor: pointer;
+        filter: contrast(150%);
+      }
+      .animated {
+        animation-name: hide-bill;
+        animation-duration: 1s;
+        animation-timing-function: ease ;
+      }
+      .bg-progress {
+        background-color: rgb(250, 148, 79);
+      }
+      @keyframes hide-bill {
+        0% {
+          transform: rotateZ(90deg) rotateY(0deg);
+          opacity: 1;
+        }
+        100% {
+          transform: rotateZ(90deg) rotateY(20deg);
+          opacity: 0;
+        }
+      }
+      .btn-warning {
+        color: #fff;
+        background-color: rgb(224, 68, 6);
+        border: none;
+      }
+      .btn-warning:focus,
+      .btn-warning:active,
+      .btn-warning:visited {
+        color: #fff !important;
+        background-color: rgb(224, 68, 6) !important;
+        box-shadow: none !important;
+        outline: none !important;
+      }
+      .btn{
+        background-color: rgb(224, 68, 6);
+        font-weight: 700;
+      }
+      .btn:hover{
+        background-color: rgb(224, 68, 6);
+        color: rgb(214, 211, 211);
+        outline: none !important;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 1) !important;
+      }
+
+      #changeBox{
+        width: 100%;
+        height: 150px;
+        background-color: rgba(224, 204, 196, 0.5);
+        position: relative;
+        outline: 1px solid #000;
+      }
+      img[src$="rub.png"]{
+        width: 50px;
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
+      img[src$="rub.png"]:hover{
+        cursor: pointer;
+        filter: contrast(150%);
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container mt-5">
+      <div class="row pt-5 mb-5">
+        <div class="col-md-6">
+          <div class="row coffee_block">
+            <div class="coffee_btn" onclick="getCoffee(48, 'Капучино')"></div>
+            <span>Капучино</span>
+            <span>48р.</span>
+          </div>
+          <div class="row coffee_block">
+            <div class="coffee_btn" onclick="getCoffee(53, 'Латте')"></div>
+            <span>Латте</span>
+            <span>53р.</span>
+          </div>
+          <div class="row coffee_block">
+            <div class="coffee_btn" onclick="getCoffee(51,'Раф')"></div>
+            <span>Раф</span>
+            <span>51р.</span>
+          </div>
+          <div class="row coffee_block">
+            <div class="coffee_btn" onclick="getCoffee(57, 'Американо')"></div>
+            <span>Американо</span>
+            <span>57р.</span>
+          </div>
+          <div class="row coffee_block">
+            <div class="coffee_btn" onclick="getCoffee(63, 'Эспрессо')"></div>
+            <span>Эспрессо</span>
+            <span>63р.</span>
+          </div>
+        </div>
+        <div class="col-md-6 text-center">
+          <div class="row flex-column align-items-center">
+            <div class="col-md-6 p-0">
+              <div id="display">
+                <p id="displayInfo">Внесите деньги</p>
+                <p id="balance"><i class="bi bi-wallet2"></i> Баланс: 0 руб.</p>
+                <div class="progress box-progress" hidden>
+                  <div
+                    class="progress-bar bg-progress progress-bar-striped progress-bar-animated"
+                    role="progressbar"
+                    aria-valuemin="0"
+                    aria-valuemax="100"
+                  ></div>
+                </div>
+              </div>
+              <button class="btn btn-warning mt-2 btn-md w-100" onclick="getChange(money.value)" id="btnGetMoney">Получить сдачу</button>
+            </div>
+            <div class="col-md-6 mt-3 p-0">
+              <input
+                type="hidden"
+                id="money"
+              />
+              <img src="img/bill_acc.jpg" alt="Купюроприемник" class="w-100" />
+              <div id="changeBox"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <img
+        src="img/50rub.jpg"
+        alt="50 рублей"
+        id="fiftyRub"
+        data-bill-value="50"
+      />
+      <img
+        src="img/100rub.jpg"
+        alt="100 рублей"
+        id="oneHundredRub"
+        data-bill-value="100"
+      />
+      <img
+        src="img/500rub.jpg"
+        alt="500 рублей"
+        id="fiveHundred"
+        data-bill-value="500"
+      />
+    </div>
+
+    <script>
+
+      let money = document.getElementById("money");
+      let displayInfo = document.getElementById("displayInfo");
+      let balance = document.getElementById("balance");
+      let changeBox = document.getElementById("changeBox");
+      let bills = document.querySelectorAll('img[src$="rub.jpg"]');
+      let bill_acc = document.querySelector('img[src$="bill_acc.jpg"]');
+
+      for (bill of bills) {
+        bill.onmousedown = function (event) {
+          bill = event.currentTarget;
+          bill.style.position = "absolute";
+          bill.style.zIndex = 100;
+          bill.style.transform = "rotate(90deg)";
+
+          document.addEventListener("mousemove", moveElement);
+
+          bill.onmouseup = function () {
+            document.removeEventListener("mousemove", moveElement);
+            bill.style.zIndex = 1;
+
+            let bill_top = bill.getBoundingClientRect().top;
+            let bill_acc_top = bill_acc.getBoundingClientRect().top;
+            let bill_left = bill.getBoundingClientRect().left;
+            let bill_acc_left = bill_acc.getBoundingClientRect().left;
+            let bill_right = bill.getBoundingClientRect().right;
+            let bill_acc_right = bill_acc.getBoundingClientRect().right;
+            let bill_acc_bottom =
+              bill_acc.getBoundingClientRect().bottom -
+              (bill_acc.getBoundingClientRect().height / 3) * 2;
+
+            if (
+              bill_top > bill_acc_top &&
+              bill_left > bill_acc_left &&
+              bill_right < bill_acc_right &&
+              bill_top < bill_acc_bottom
+            ) {
+              bill.classList.add("animated");
+              setTimeout(function () {
+                bill.hidden = true;
+              }, 480);
+              money.value = +money.value + +bill.dataset.billValue;
+              balance.innerHTML = `<i class="bi bi-wallet2"></i> Баланс: ${money.value} руб.`;
+            }
+          }
+        }
+        function moveElement(event) {
+          let x = event.clientX - 150;
+          let y = event.clientY - 50;
+
+          bill.style.top = y + "px";
+          bill.style.left = x + "px";
+        }
+        bill.ondragstart = function () {
+          return false;
+        };
+      }
+
+      function getCoffee(price, name) {
+        if (money.value >= price) {
+          money.value -= price;
+          balance.innerHTML = `<i class="bi bi-wallet2"></i> Баланс: ${money.value} руб.`;
+          startProgressBar(name);
+        } else {
+          displayInfo.innerHTML = "Не достаточно средств";
+        }
+      }
+
+      function getChange(num){
+        let coin;
+        let top = getRandom(0, 150 - 54);
+        let left = getRandom(0, changeBox.getBoundingClientRect().width - 54);
+        if(num >= 10) coin = 10;
+        else if(num >= 5) coin = 5;
+        else if(num >=2) coin = 2;
+        else if(num >=1) coin = 1;
+        else if(num == 0) coin.style.hidden = 'true';
+        console.log(coin);
+        changeBox.innerHTML += `<img src="img/${coin}rub.png" style ="top:${top}px; left:${left}px" onclick = "this.style.visibility='hidden'">`;
+        if (num - coin !== 0) getChange(num - coin);
+        money.value = 0;
+        balance.innerHTML = `<i class="bi bi-wallet2"></i> Баланс: ${money.value} руб.`;
+      }
+
+        function startProgressBar(coffeeName) {
+          let i = 0;
+          let progressBar = document.querySelector(".progress-bar");
+          progressBar.parentElement.hidden = false;
+          displayInfo.innerHTML = `<i class="bi bi-cup-hot"> </i>Ваш ${coffeeName} готовится ...`;
+
+          function progress() {
+            i++;
+            progressBar.style.width = i + "%";
+
+            if (i == 100) {
+              clearInterval(timerId);
+              progressBar.parentElement.hidden = true;
+              progressBar.style.width = 0 + '%';
+              displayInfo.innerHTML = `<i class="bi bi-cup-hot-fill"></i> Ваш ${coffeeName} готов!`;
+            }
+        }
+        let timerId = setInterval(progress, 50);
+      }
+
+      function getRandom(min, max){
+        return Math.random() * (max - min) + min;
+      }
+
+    </script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
+      integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>
